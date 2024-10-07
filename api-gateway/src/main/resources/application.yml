@@ -1,0 +1,58 @@
+spring:
+ cloud:
+   gateway:
+     globalcors:
+       corsConfigurations:
+         '[/**]':
+           allowedOrigins: "http://localhost:3000"
+           allowedHeaders: "*"
+           allowedMethods:
+            - GET
+            - POST
+            - PUT 
+               
+     routes:
+
+       - id: test-a
+         uri: lb://TEST-A
+         predicates:
+           - Path=/test-a/**
+           
+         filters:
+           - AuthenticationFilter
+
+
+
+       - id: picture-service
+         uri: lb://PICTURE-SERVICE
+         predicates:
+           - Path=/picture/**
+         filters:
+           - AuthenticationFilter
+
+
+       - id: catalog-service
+         uri: lb://CATALOG-SERVICE
+         predicates:
+           - Path=/catalog/**
+         filters:
+           - AuthenticationFilter
+
+
+
+       - id: auth-service
+         uri: lb://AUTH-SERVICE
+         predicates:
+           - Path=/auth/**
+
+ application:
+   name: api-gateway
+
+eureka:
+  client:
+    service-url:
+      defaultZone : http://localhost:8761/eureka/
+      
+      
+      
+      
